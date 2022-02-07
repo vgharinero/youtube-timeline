@@ -1,29 +1,43 @@
 {
   "name": "youtube-timeline",
-  "version": "1.0.0",
-  "description": "A youtube timeline image generator",
-  "main": "index.js",
+  "version": "0.0.1",
+  "description": "A youtube timeline base64 image generator",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
-    "test": "jest --config jestconfig.json",
     "build": "tsc",
-    "format": "prettier --write \"src/**/*.ts\"",
-    "lint": "tslint -p tsconfig.json"
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
   },
-  "files": [
-    "lib/**/*"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vgranado/youtube-timeline.git"
+  },
+  "keywords": [
+    "Youtube",
+    "Timeline",
+    "Storyboard"
   ],
   "author": "Víctor Granados",
-  "license": "ISC",
   "dependencies": {
+    "axios": "^0.25.0",
+    "merge-base64": "^1.0.4",
+    "sharp": "^0.30.0",
     "ytdl-core": "^4.10.1"
   },
   "devDependencies": {
-    "@types/jest": "^27.4.0",
-    "jest": "^27.5.0",
+    "@types/sharp": "^0.29.5",
     "prettier": "^2.5.1",
-    "ts-jest": "^27.1.3",
     "tslint": "^6.1.3",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^4.5.5"
-  }
+  },
+  "files": [
+    "lib/**/*"
+  ]
 }
