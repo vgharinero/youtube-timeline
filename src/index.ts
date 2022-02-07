@@ -3,7 +3,7 @@ import axios from 'axios';
 import * as ytdl from 'ytdl-core';
 import * as sharp from 'sharp';
 
-const mergeBase64 = require('merge-base64');
+import mergeBase64 = require('merge-base64');
 
 type Base64Image = string;
 
@@ -33,8 +33,8 @@ const parseStoryboardQuality = (quality: StoryboardQuality) => {
   return qualityNumber[quality];
 };
 
-const evenlyDistributedElements = <T>(array: Array<T>, quantity: number) => {
-  if (quantity == 0) return [];
+const evenlyDistributedElements = <T>(array: T[], quantity: number) => {
+  if (quantity === 0) return [];
   if (quantity >= array.length) return [...array];
 
   const interval = array.length / quantity;
@@ -47,9 +47,9 @@ const getFramesDetails = (
   thumbnailCount: number,
   thumbnailWidth: number,
   thumbnailHeight: number,
-): Array<FrameDetails> => {
-  const COLUMNS = 5,
-    ROWS = 5;
+): FrameDetails[] => {
+  const COLUMNS = 5;
+  const ROWS = 5;
 
   const selectedFrames = evenlyDistributedElements(
     Array.from({ length: thumbnailCount }).map((_, i) => i),
@@ -74,9 +74,9 @@ const cropImage = async (url: string, cropSettings: CropSettings): Promise<Base6
   return (await sharp(buffer).extract(cropSettings).toFormat('jpeg').toBuffer()).toString('base64');
 };
 
-const mergeImages = async (images: Array<Base64Image>): Promise<Base64Image> => await mergeBase64(images);
+const mergeImages = async (images: Base64Image[]): Promise<Base64Image> => await mergeBase64(images);
 
-export const getTimeline = async (url: string, quality: StoryboardQuality, quantity: number): Promise<Timeline> => {
+const getTimeline = async (url: string, quality: StoryboardQuality, quantity: number): Promise<Timeline> => {
   if (quantity <= 0) return undefined;
 
   const videoData = await ytdl.getInfo(url);
@@ -96,3 +96,5 @@ export const getTimeline = async (url: string, quality: StoryboardQuality, quant
 
   return timeline;
 };
+
+export default getTimeline;
